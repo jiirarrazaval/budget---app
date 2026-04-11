@@ -27,7 +27,6 @@
 - { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { background: var(–bg); color: var(–text); font-family: ‘Syne’, sans-serif; min-height: 100dvh; padding-bottom: 100px; }
 
-/* HEADER */
 header { padding: 32px 20px 20px; border-bottom: 1px solid var(–border); position: sticky; top: 0; z-index: 10; background: rgba(245,242,238,0.96); backdrop-filter: blur(12px); }
 .header-top { display: flex; justify-content: space-between; align-items: center; }
 .app-title { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: var(–muted); text-transform: uppercase; }
@@ -50,33 +49,20 @@ header { padding: 32px 20px 20px; border-bottom: 1px solid var(–border); posit
 .progress-labels { display: flex; justify-content: space-between; margin-top: 6px; font-family: ‘Space Mono’, monospace; font-size: 10px; color: var(–muted); }
 .pct-label { font-weight: 700; }
 
-/* PAST MONTH BANNER */
 .past-banner { background: var(–surface2); border-bottom: 1px solid var(–border); padding: 10px 20px; font-size: 11px; font-weight: 700; color: var(–muted); text-align: center; letter-spacing: 0.1em; text-transform: uppercase; display: none; }
 .past-banner.show { display: block; }
 
-/* TABS */
 .tabs { display: flex; border-bottom: 1px solid var(–border); background: var(–bg); position: sticky; top: 190px; z-index: 9; }
 .tab { flex: 1; padding: 14px 0; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(–muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; transition: color 0.2s; }
 .tab.active { color: var(–accent); border-bottom-color: var(–accent); }
 
-/* VIEWS */
 .view { display: none; padding: 20px; }
 .view.active { display: block; }
 .section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(–muted); margin-bottom: 14px; }
 
 /* CAT CARDS */
 .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.cat-card {
-background: var(–surface);
-border-radius: 20px;
-padding: 16px;
-position: relative;
-overflow: hidden;
-cursor: pointer;
-box-shadow: 0 2px 14px rgba(0,0,0,0.07);
-transition: transform 0.1s, box-shadow 0.1s;
-border: none;
-}
+.cat-card { background: var(–surface); border-radius: 20px; padding: 16px; position: relative; overflow: hidden; cursor: pointer; box-shadow: 0 2px 14px rgba(0,0,0,0.07); transition: transform 0.1s, box-shadow 0.1s; border: none; }
 .cat-card:active { transform: scale(0.96); box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
 .cat-card::after { content: ‘’; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; }
 .cat-card[data-cat=“Supermercado”]::after    { background: #2d6a4f; }
@@ -92,10 +78,12 @@ border: none;
 .cat-pct    { font-size: 10px; color: var(–muted); font-family: ‘Space Mono’, monospace; margin-top: 2px; }
 
 /* ACTIONS */
-.actions-row { display: flex; gap: 10px; }
+.actions-row { display: flex; gap: 10px; margin-bottom: 10px; }
 .btn-action { flex: 1; padding: 14px; border-radius: 14px; font-family: ‘Syne’, sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; border: 1.5px solid var(–border); background: var(–surface); display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s, border-color 0.15s; }
 .btn-action.danger { color: var(–danger); }
 .btn-action.danger:active { background: var(–danger-light); border-color: var(–danger); }
+.btn-action.info  { color: var(–accent); }
+.btn-action.info:active  { background: var(–accent-light); border-color: var(–accent); }
 
 /* HISTORY */
 .history-list { display: flex; flex-direction: column; gap: 10px; }
@@ -141,56 +129,35 @@ border: none;
 .fab:active { transform: scale(0.93); }
 .fab.hidden { opacity: 0; pointer-events: none; }
 
-/* ── MODAL OVERLAY ── */
-.modal-overlay {
-position: fixed;
-inset: 0;
-z-index: 200;
-background: rgba(0,0,0,0.55);
-display: flex;
-align-items: flex-end;
-opacity: 0;
-pointer-events: none;
-transition: opacity 0.25s;
-}
-.modal-overlay.open {
-opacity: 1;
-pointer-events: all;
-}
-
-/* ── MODAL SHEET ── */
-.modal {
-background: #ffffff;
-border-radius: 24px 24px 0 0;
-padding: 28px 24px 48px;
-width: 100%;
-transform: translateY(100%);
-transition: transform 0.35s cubic-bezier(.4,0,.2,1);
-max-height: 92dvh;
-overflow-y: auto;
-box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
-/* Ensure fully opaque */
-opacity: 1 !important;
-}
-.modal-overlay.open .modal {
-transform: translateY(0);
-}
-
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.55); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: #ffffff; border-radius: 24px 24px 0 0; padding: 28px 24px 48px; width: 100%; transform: translateY(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1); max-height: 92dvh; overflow-y: auto; box-shadow: 0 -4px 30px rgba(0,0,0,0.15); }
+.modal-overlay.open .modal { transform: translateY(0); }
 .modal-handle { width: 36px; height: 4px; border-radius: 2px; background: #e0dbd4; margin: 0 auto 24px; }
 .modal-title  { font-size: 22px; font-weight: 800; margin-bottom: 24px; color: #1a1714; }
-
 .form-group { margin-bottom: 18px; }
 .form-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(–muted); margin-bottom: 8px; }
 .form-input { width: 100%; padding: 14px 16px; background: var(–bg); border: 1.5px solid var(–border); border-radius: 12px; color: var(–text); font-size: 16px; font-family: ‘Space Mono’, monospace; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
 .form-input:focus { border-color: var(–accent); }
+.form-textarea { width: 100%; padding: 14px 16px; background: var(–bg); border: 1.5px solid var(–border); border-radius: 12px; color: var(–text); font-size: 12px; font-family: ‘Space Mono’, monospace; outline: none; transition: border-color 0.2s; -webkit-appearance: none; resize: none; height: 140px; }
+.form-textarea:focus { border-color: var(–accent); }
 .cat-picker { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
 .cat-pill { padding: 10px 6px; border-radius: 12px; border: 1.5px solid var(–border); background: var(–bg); color: var(–muted); font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.15s; }
 .cat-pill .p-emoji { font-size: 20px; }
 .cat-pill.selected { border-color: var(–accent); color: var(–accent); background: var(–accent-light); }
 .btn-primary { width: 100%; padding: 16px; background: var(–accent); color: #fff; font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; border: none; border-radius: 14px; cursor: pointer; margin-top: 8px; font-family: ‘Syne’, sans-serif; transition: transform 0.12s, opacity 0.12s; }
 .btn-primary:active { transform: scale(0.98); opacity: 0.85; }
+.btn-secondary { width: 100%; padding: 16px; background: var(–surface2); color: var(–text); font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; border: none; border-radius: 14px; cursor: pointer; margin-top: 8px; font-family: ‘Syne’, sans-serif; transition: transform 0.12s, opacity 0.12s; }
+.btn-secondary:active { transform: scale(0.98); opacity: 0.85; }
 
-/* CATEGORY DETAIL */
+/* EXPORT/IMPORT */
+.export-box { background: var(–bg); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+.export-hint { font-size: 12px; color: var(–muted); line-height: 1.6; margin-bottom: 12px; }
+.export-steps { font-size: 12px; color: var(–text); line-height: 2; }
+.export-steps strong { color: var(–accent); }
+
+/* CAT DETAIL */
 .cat-detail-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(–border); }
 .cat-detail-emoji { font-size: 40px; }
 .cat-detail-info  { flex: 1; }
@@ -206,7 +173,7 @@ transform: translateY(0);
 .confirm-box { background: #ffffff; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 320px; transform: scale(0.93); transition: transform 0.2s cubic-bezier(.4,0,.2,1); box-shadow: 0 8px 40px rgba(0,0,0,0.18); }
 .confirm-overlay.open .confirm-box { transform: scale(1); }
 .confirm-icon  { font-size: 40px; text-align: center; margin-bottom: 14px; }
-.confirm-title { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 8px; color: #1a1714; }
+.confirm-title { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 8px; }
 .confirm-msg   { font-size: 13px; color: var(–muted); text-align: center; line-height: 1.6; margin-bottom: 24px; }
 .confirm-btns  { display: flex; gap: 10px; }
 .confirm-btns button { flex: 1; padding: 14px; border-radius: 12px; font-family: ‘Syne’, sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: opacity 0.15s; }
@@ -214,7 +181,6 @@ transform: translateY(0);
 .btn-cancel      { background: var(–surface2); color: var(–muted); }
 .btn-confirm-del { background: var(–danger); color: #fff; }
 
-/* TOAST */
 .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px); background: var(–text); color: var(–bg); border-radius: 12px; padding: 12px 20px; font-size: 13px; font-weight: 700; z-index: 999; transition: transform 0.3s cubic-bezier(.4,0,.2,1); white-space: nowrap; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
@@ -260,6 +226,7 @@ transform: translateY(0);
   <div class="cat-grid" id="catGrid"></div>
   <div class="actions-row" id="actionsRow">
     <button class="btn-action danger" onclick="confirmReset()">🗓 Nuevo mes</button>
+    <button class="btn-action info" onclick="openExportModal()">📤 Datos</button>
   </div>
 </div>
 
@@ -310,6 +277,42 @@ transform: translateY(0);
       </div>
     </div>
     <button class="btn-primary" onclick="addExpense()">Agregar gasto</button>
+  </div>
+</div>
+
+<!-- MODAL EXPORTAR/IMPORTAR -->
+
+<div class="modal-overlay" id="exportModalOverlay" onclick="closeExportOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📤 Exportar / Importar</div>
+
+```
+<div class="export-box">
+  <div class="export-hint">Usa esto para mover tus datos entre Safari y la app en la pantalla de inicio.</div>
+  <div class="export-steps">
+    <strong>Para exportar:</strong><br>
+    1. Toca "Copiar datos"<br>
+    2. Abre la app desde el otro lugar<br>
+    3. Ve a 📤 Datos → Pega y toca "Importar"
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="form-label">Tus datos actuales</label>
+  <textarea class="form-textarea" id="exportText" readonly></textarea>
+</div>
+<button class="btn-primary" onclick="copyData()">📋 Copiar datos</button>
+
+<div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border);">
+  <div class="form-group">
+    <label class="form-label">Pegar datos para importar</label>
+    <textarea class="form-textarea" id="importText" placeholder="Pega aquí los datos copiados..."></textarea>
+  </div>
+  <button class="btn-secondary" onclick="importData()">📥 Importar datos</button>
+</div>
+```
+
   </div>
 </div>
 
@@ -513,19 +516,60 @@ function renderHistory() {
   });
 }
 
+// ── EXPORT / IMPORT ──────────────────────────────────
+function openExportModal() {
+  const exportData = {
+    current: currentData,
+    history: historyData
+  };
+  document.getElementById('exportText').value = JSON.stringify(exportData);
+  document.getElementById('importText').value = '';
+  document.getElementById('exportModalOverlay').classList.add('open');
+}
+function closeExportModal() { document.getElementById('exportModalOverlay').classList.remove('open'); }
+function closeExportOutside(e) { if(e.target===document.getElementById('exportModalOverlay')) closeExportModal(); }
+
+function copyData() {
+  const text = document.getElementById('exportText').value;
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast('✅ ¡Datos copiados!');
+  }).catch(()=>{
+    // fallback for older iOS
+    const el = document.getElementById('exportText');
+    el.select();
+    document.execCommand('copy');
+    showToast('✅ ¡Datos copiados!');
+  });
+}
+
+function importData() {
+  const text = document.getElementById('importText').value.trim();
+  if (!text) { showToast('⚠ Pega los datos primero'); return; }
+  try {
+    const parsed = JSON.parse(text);
+    if (!parsed.current || !parsed.history) throw new Error('formato inválido');
+    currentData = parsed.current;
+    historyData = parsed.history;
+    save();
+    render();
+    closeExportModal();
+    showToast('✅ ¡Datos importados!');
+  } catch(e) {
+    showToast('⚠ Datos inválidos, intenta de nuevo');
+  }
+}
+
 // ── CATEGORY DETAIL ──────────────────────────────────
 function openCatDetail(catName) {
   const info=CATS[catName];
   const exps=expensesFor(viewingKey).filter(e=>e.cat===catName);
   const total=totalOf(exps);
   const isCur=isCurrentMonth();
-
   document.getElementById('catDetailEmoji').textContent=info.emoji;
   document.getElementById('catDetailName').textContent=catName;
   document.getElementById('catDetailTotal').textContent=`$${fmt(total)}`;
   document.getElementById('catDetailTotal').style.color=info.color;
   document.getElementById('catDetailCount').textContent=`${exps.length} gasto${exps.length!==1?'s':''}`;
-
   const list=document.getElementById('catDetailList'); list.innerHTML='';
   if (!exps.length) {
     list.innerHTML=`<div class="cat-detail-empty">Sin gastos en esta categoría</div>`;
