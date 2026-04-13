@@ -486,19 +486,60 @@ function pttReset() {
   document.getElementById('pttIcon').textContent = '🎤';
   document.getElementById('pttText').textContent = 'Mantén apretado para hablar';
 }
-
 function fillFromVoice(transcript) {
-  const text = transcript.toLowerCase().trim();
+  const text = transcript.trim();
 
-  // Extract amount
-  let amount = null;
-  const milMatch = text.match(/(\d+[\d,]*)\s*(mil|k)\b/i);
-  const numMatch = text.match(/\b(\d[\d.,]*)\b/);
-  if (milMatch) {
-    amount = Math.round(parseFloat(milMatch[1].replace(',','.')) * 1000);
-  } else if (numMatch) {
-    amount = Math.round(parseFloat(numMatch[1].replace('.','').replace(',','.')));
+  // Patrón: "Gasté MONTO en DESCRIPCION ponlo en categoria CATEGORIA"
+  const pattern = /gast[eé]\s+([\d.,]+\s*(?:mil|k)?)\s+en\s+(.+?)\s+ponlo\s+en\s+categor[ií]a\s+(.+)/i;
+  const match = text.match(pattern);
+
+  if (match) {
+    // Monto
+    let rawAmount = match[1].trim().toLowerCase();
+    let amount = parseFloat(rawAmount.replace(/\./g,'').replace(',','.'));
+    if (/mil|k/.test(rawAmount)) amount *= 1000;
+    amount = Math.round(amount);
+
+    // Descripción
+    const desc = match[2].trim();
+
+    // Categoría — busca la más parecida
+    const spokenCat = match[3].trim().toLowerCase();
+    let detectedCat = null;
+    for (const cat of Object.keys(CATS)) {
+      if (cat.toLowerCase().includes(spokenCat) || spokenCat.includes(cat.toLowerCase())) {
+        detectedCat = cat; break;
+      }
+    }
+    // fallback por keywords
+    if (!detectedCat) {
+      for (const [cat, keywords] of Object.entries(CAT_KEYWORDS)) {
+        if (keywords.some(kw => spokenCat.includes(kw))) { detectedCat = cat; break; }
+      }
+    }
+
+    if (desc) document.getElementById('descInput').value = desc;
+    if (amount > 0) document.getElementById('amountInput').value = amount;
+    if (detectedCat) {
+      document.querySelectorAll('.cat-pill').forEach(p => {
+        p.classList.toggle('selected', p.dataset.cat === detectedCat);
+      });
+      selectedCat = detectedCat;
+    }
+
+    const parts = [];
+    if (desc) parts.push(desc);
+    if (amount) parts.push('$' + amount.toLocaleString('es-CL'));
+    if (detectedCat) parts.push(detectedCat);
+    document.getElementById('pttTranscript').textContent = '✅ ' + parts.join(' · ');
+
+  } else {
+    // Si no entiende el formato, muestra lo que escuchó
+    document.getElementById('pttTranscript').textContent = '⚠ Di: "Gasté 7000 en regalo ponlo en categoría Regalos"';
   }
+}
+
+
 
   // Detect category
   let detectedCat = null;
