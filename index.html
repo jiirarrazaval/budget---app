@@ -108,7 +108,7 @@
   .modal-handle { width: 36px; height: 4px; border-radius: 2px; background: #e0dbd4; margin: 0 auto 24px; }
   .modal-title { font-size: 22px; font-weight: 800; margin-bottom: 20px; color: #1a1714; }
   .ptt-wrap { margin-bottom: 20px; }
-  .ptt-btn { width: 100%; padding: 18px; border-radius: 16px; border: 2px dashed var(--border); background: var(--bg); color: var(--muted); font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.15s; user-select: none; -webkit-user-select: none; touch-action: none; }
+  .ptt-btn { width: 100%; padding: 18px; border-radius: 16px; border: 2px dashed var(--border); background: var(--bg); color: var(--muted); font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.15s; user-select: none; -webkit-user-select: none; }
   .ptt-btn.recording { background: var(--danger-light); border-color: var(--danger); color: var(--danger); animation: pulseBtn 1s infinite; }
   @keyframes pulseBtn { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); } }
   .ptt-hint { text-align: center; font-size: 11px; color: var(--muted); margin-top: 8px; font-family: 'Space Mono', monospace; }
@@ -231,9 +231,7 @@
     <div class="modal-handle"></div>
     <div class="modal-title">Nuevo gasto</div>
     <div class="ptt-wrap">
-      <button class="ptt-btn" id="pttBtn"
-        ontouchstart="pttStart(event)" ontouchend="pttStop(event)"
-        onmousedown="pttStart(event)" onmouseup="pttStop(event)" onmouseleave="pttStop(event)">
+      <button class="ptt-btn" id="pttBtn">
         <span id="pttIcon">🎤</span>
         <span id="pttText">Mantén apretado para hablar</span>
       </button>
@@ -736,6 +734,14 @@ function showToast(msg) {
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
+
+// PTT listeners via JS (not inline HTML, to avoid blocking iOS keyboard)
+const pttBtn = document.getElementById('pttBtn');
+pttBtn.addEventListener('touchstart', pttStart, { passive: false });
+pttBtn.addEventListener('touchend',   pttStop,  { passive: false });
+pttBtn.addEventListener('mousedown',  pttStart);
+pttBtn.addEventListener('mouseup',    pttStop);
+pttBtn.addEventListener('mouseleave', pttStop);
 
 load(); viewingKey=todayKey(); render();
 </script>
